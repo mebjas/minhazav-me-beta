@@ -1,0 +1,36 @@
+body {
+    background-color: rgb(188, 223, 117);
+    color: black;
+	font-family: 'Slabo 27px', serif;
+	transition: background 1s;
+}
+
+#anim-frame .obj-main {
+    font-size: 40pt;
+    width: 80%;
+    margin: auto;
+    margin-top: 150px;
+    transition: top 1s, position .5s;
+}
+.obj-main div {
+    display: inline-block;
+    border: 1px red dashed;
+    padding: 5px;
+    transition: margin-left .5s, top .5s, left .5s,color .5s, font-size .5s, transform 3s, background 1s;
+}
+
+.obj-main div span {
+	transition: position 1s, top 1s, left 1s;
+}
+
+.text_2 {
+	width: 80%; margin: auto;font-size: 30pt;
+	color: black;
+}
+.clearfix {
+	display: block;
+	width: 100%;
+	height: 10px;
+}
+
+.ht30 {height: 30px;}
