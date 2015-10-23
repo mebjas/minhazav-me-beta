@@ -1,12 +1,58 @@
 // Global variables
 var GLOBALS = {};
 GLOBALS.FREQ = 50;
-GLOBALS.soundEnabled = true;
+GLOBALS.soundEnabled = false;
 GLOBALS.audio_keystroke = null;
 GLOBALS.audio_filename = {
 	'audio_keystroke': 'sound/typewriter-key-1.wav'
 };
 
+
+// Class defination of elements that move in certain direction
+var belem = function(obj) {
+	// Obj is initiated now it will do what it needs to do
+	var offset = obj.offset();
+	obj.css('position', 'fixed');
+	obj.css('top', offset.top +'px');
+	obj.css('left', offset.left +'px');
+	var theta = (Math.floor(Math.random() * 1000) % 360 );
+	var dir = 1;
+	if (theta > 90 && theta < 270) dir = -1;
+
+	theta = theta * Math.PI / 180;
+	// make projection
+	var c = offset.top - Math.tan(theta) * offset.left;
+
+	this.destX = -200;	
+	if (dir == 1) this.destX = screen.width + 200;
+	this.destY = Math.tan(theta) * this.destX + c;
+
+	this.dx = (this.destX - offset.left) / 50;
+	this.dy = (this.destY - offset.top) / 50;
+
+	this.x = offset.left;
+	this.y = offset.top;
+	this.obj = obj;
+	this.move(1000);
+}
+
+belem.prototype.move = function(step) {
+	if (!step) {
+		this.obj.remove();
+		return;
+	}
+	this.x += this.dx;
+	this.y += this.dy;
+
+	this.obj.css('top', this.y +'px');
+	this.obj.css('left', this.x +'px');
+	if (step % 10 == 0)
+		this.obj.css('transform', 'rotate(' +(Math.floor(Math.random() * 1000) % 360 ) +'deg)');
+	var _this = this;
+	setTimeout(function() {
+		_this.move(step - 1);
+	}, 50);
+}
 
 // Function to move a jQuery object by @param: offset
 function moveDown(obj, offset) {

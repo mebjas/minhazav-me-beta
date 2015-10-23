@@ -9,25 +9,42 @@ function repositionElems() {
 	}
 }
 
+
+
+function blooberElemets(obj, except) {
+	for (i = 0; i < obj.children('div').length; i++) {
+		if (i == except) continue;
+		var t = obj.children('div').eq(i);
+		var elem = t.html();
+		t.html('');
+		for (j = 0; j < elem.length; j++) {
+			t.append('<span class="blooberElem">' +elem[j] +'</span>');
+		}
+	}
+
+	for (i = $(".blooberElem").length - 1; i > -1 ; i--) {
+		new belem($(".blooberElem").eq(i));
+	}
+}
+
 function upSideDownElems() {
 	var obj = $("#anim-frame .obj-main");
 	var elems = obj.children('div');
-	var loffset = elems.eq(0).offset();
-	elems.each(function() {
-		$(this).css('top', loffset.top +'px');
-		$(this).css('left', loffset.left +'px');
-		loffset.top += $(this).height() + 20;
-	});
-
-	elems.eq(2).css('color', 'red');
-	elems.css('border', 'none');
+	// var loffset = elems.eq(0).offset();
+	// elems.each(function() {
+	// 	$(this).css('top', loffset.top +'px');
+	// 	$(this).css('left', loffset.left +'px');
+	// 	loffset.top += $(this).height() + 20;
+	// });
+	// elems.eq(2).css('color', 'red');
+	// elems.css('border', 'none');
 
 	setTimeout(function() {
-		elems.eq(0).css('left', '-500px');
-		elems.eq(1).css('left', '-1200px');
-		elems.eq(3).css('left', (screen.width + 200) +'px');
+		// elems.eq(0).css('left', '-500px');
+		// elems.eq(1).css('left', '-1200px');
+		// elems.eq(3).css('left', (screen.width + 200) +'px');
 
-		elems.eq(2).css('color', 'black');
+		// elems.eq(2).css('color', 'black');
 		setTimeout(function() {
 			var x = elems.eq(2);
 			p = x.html();
@@ -54,6 +71,23 @@ function upSideDownElems() {
 
 				$(".text_2").typethis("Please prove you are a human!", 0, function() {
 					$(".text_2").typethis("Please prove you are a human!<br>Move this block to the right!", 33);
+					x.html("");
+					x.attr('draggable', 'true');
+					x.attr('id', '_t');
+
+					var target = document.getElementById('_t');
+
+					target.ondrag = function(e) {
+						this.style.background = 'red';
+					}
+					target.ondragover = function(e) {
+						// $(this).css('top', e.clientY +'px');
+						// $(this).css('left', e.clientX +'px');
+						this.style.background = 'yellowGreen';
+					}
+					target.ondragned = function(e) {
+						this.style.background = 'yellowGreen';
+					};
 				}, 500);
 			}, 100);
 		}, 100);
@@ -78,7 +112,20 @@ $(document).ready(function() {
 												obj.makeDivs(function() {
 													obj.children("div").css("margin-left", "10px");
 													setTimeout(repositionElems, 1000);
-													setTimeout(upSideDownElems, 1000);
+													// return;
+													setTimeout(function() {
+														obj.children("div").eq(2).css("transform-origin", "0% 0%");
+														obj.children("div").eq(2).css("transform", "rotate(45deg)");
+														setTimeout(function() {
+															obj.children("div").css("border", "none");
+															
+															obj.children("div").eq(2).css("top", "300px");
+															obj.children("div").eq(2).css("transform", "rotate(0deg)");
+															blooberElemets(obj, 2);
+															setTimeout(upSideDownElems, 1000);
+
+														}, 1000)
+													}, 1500);
 												}, 500);
 											}, 1000);
 											$("body").css("background", "white");
